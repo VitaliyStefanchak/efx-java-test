@@ -1,0 +1,35 @@
+#!/bin/bash
+
+echo ".....Starting....."
+
+# remove apps docker images if exists
+echo ".....Cleaning docker images....."
+
+docker rmi scripts_producer
+docker rmi scripts_subscriber
+docker rmi scripts_client
+
+# build all jars
+echo ".....Building all jars....."
+
+cd ../producer
+mvn clean package -DskipTests=true
+
+cd -
+
+cd ../subscriber
+mvn clean package -DskipTests=true
+
+cd -
+
+cd ../client
+mvn clean package -DskipTests=true
+
+cd -
+
+# run docker containers using compose
+echo ".....Running docker containers....."
+
+docker-compose up -d
+
+echo ".....Success....."
